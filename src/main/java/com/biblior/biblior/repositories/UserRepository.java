@@ -1,4 +1,8 @@
 package com.biblior.biblior.repositories;
 
-public class UserRepository {
+import com.biblior.biblior.entities.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserRepository extends JpaRepository<User, Long>{
+
 }
