@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Management System</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+          crossorigin="anonymous">
+
+</head>
+<body>
+
+    <div class="container">
+        <div class="row">
+            <h1>List of users</h1>
+        </div>
+        <table class="table table-stripped table-bordered">
+            <thead class="table-dark">
+            <tr>
+                <th>User first name</th>
+                <th>User last name</th>
+                <th>User email</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="user: ${users}">
+                    <td th:text = "${user.firstName}"></td>
+                    <td th:text = "${user.lastName}"></td>
+                    <td th:text = "${user.email}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

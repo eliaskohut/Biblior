@@ -3,9 +3,8 @@ package com.biblior.biblior.entities;
 import javax.persistence.*;
 
 @Entity
-@MappedSuperclass
 @Table(name="users")
-public abstract class User{
+public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
