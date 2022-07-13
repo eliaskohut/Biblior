@@ -8,11 +8,11 @@ public abstract class Printed {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name="TYPE")
+    @Column(name="TYPE", nullable = false)
     public String type;
-    @Column(name="TITLE")
+    @Column(name="TITLE", nullable = false)
     public String title;
-    @Column(name="AUTHOR")
+    @Column(name="AUTHOR", nullable = false)
     public String author;
     @Column(name="YEAR_OF_PUBLISHING")
     public int yearOfPub;
@@ -21,7 +21,7 @@ public abstract class Printed {
     @Column(name="Price")
     public double price;
     @Column(name="IS_BORROWED")
-    private boolean isBorrowed;
+    private boolean isBorrowed = false;
 
     public Printed() {
     }
