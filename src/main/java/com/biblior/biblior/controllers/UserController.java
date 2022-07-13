@@ -5,7 +5,9 @@ import com.biblior.biblior.services.impl.UserServiceImpl;
 import org.atmosphere.config.service.Get;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.persistence.GeneratedValue;
 
@@ -22,4 +24,5 @@ public class UserController {
         model.addAttribute("users", userService.getAllUsers());
         return "users";
     }
+
 }

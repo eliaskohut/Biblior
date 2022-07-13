@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="users")
-public class User{
+public abstract class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -14,6 +14,7 @@ public class User{
     private String lastName;
     @Column(name = "EMAIL", nullable = true, unique = true)
     private String email;
+    @Column(name="TYPE")
     private String type;
 
     public User() {
