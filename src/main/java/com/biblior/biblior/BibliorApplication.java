@@ -31,11 +31,12 @@ public class BibliorApplication implements CommandLineRunner {
         Librarian librarian1 = new Librarian("Thor", "Odinson", "callmegus@gmail.com");
         userRepository.saveAll(new ArrayList<User>(Arrays.asList(reader1, reader2, warehouser1, librarian1)));
         Book b1 = new Book("1001 Nights", "Jack Sparrow", 1001, 199, 34.50, Genres.FAIRYTALE);
-        Book b2 = new Book("1001", "Jack Nightingale", 1999, 200, 34.69, Genres.FAIRYTALE);
-        Book b3 = new Book("1001 Days", "Jack Hawk", 2000, 189, 69.96, Genres.FAIRYTALE);
-        Book b4 = new Book("1001 Evenings", "Jack Pigeon", 1888, 100, 100.50, Genres.FAIRYTALE);
-        Newspaper n1 = new Newspaper("Man, cmmon", "Pravda", 1912, 2, 1.20, "Russia");
-        Article a1 = new Article("McLovin as a cause of the 2008 economic crisis", "Mankew", 2007, 53, 20, "Economics");
-//        printedRepository.saveAll(new ArrayList<Printed>(Arrays.asList(b1, b2, b3, b4, n1, a1)));
+//        Book b2 = new Book("1001", "Jack Nightingale", 1999, 200, 34.69, Genres.FAIRYTALE);
+//        Book b3 = new Book("1001 Days", "Jack Hawk", 2000, 189, 69.96, Genres.FAIRYTALE);
+//        Book b4 = new Book("1001 Evenings", "Jack Pigeon", 1888, 100, 100.50, Genres.FAIRYTALE);
+//        Newspaper n1 = new Newspaper("Man, cmmon", "Pravda", 1912, 2, 1.20, "Russia");
+//        Article a1 = new Article("McLovin as a cause of the 2008 economic crisis", "Mankew", 2007, 53, 20, "Economics");
+//        Printed p1 = new Printed("123123123", "321321321", 2000, 2, 1.40);
+//        printedRepository.save(b1);
     }
 }

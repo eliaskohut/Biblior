@@ -1,15 +1,19 @@
 package com.biblior.biblior.entities;
 
+import org.hibernate.annotations.DiscriminatorFormula;
+
 import javax.persistence.*;
 
-@Entity
-@Table(name="printed")
+@MappedSuperclass
+@Table(name="printed",
+        uniqueConstraints = {
+        @UniqueConstraint(name="cols", columnNames = {"TITLE", "AUTHOR", "YEAR_OF_PUBLISHING", "NUMBER_OF_PAGES"
+        , "PRICE", "IS_BORROWED"})
+})
 public abstract class Printed {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name="TYPE", nullable = false)
-    public String type;
     @Column(name="TITLE", nullable = false)
     public String title;
     @Column(name="AUTHOR", nullable = false)
@@ -18,7 +22,7 @@ public abstract class Printed {
     public int yearOfPub;
     @Column(name="NUMBER_OF_PAGES")
     public int pages;
-    @Column(name="Price")
+    @Column(name="PRICE")
     public double price;
     @Column(name="IS_BORROWED")
     private boolean isBorrowed = false;
@@ -32,7 +36,7 @@ public abstract class Printed {
         this.yearOfPub = yearOfPub;
         this.pages = pages;
         this.price = price;
-        this.type=this.getClass().getSimpleName();
+        this.isBorrowed = false;
     }
 
     public String getTitle() {

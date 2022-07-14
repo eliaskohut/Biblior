@@ -1,13 +1,17 @@
 package com.biblior.biblior.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
+@Table(name="articles",
+uniqueConstraints={
+        @UniqueConstraint(name = "cols", columnNames = {"TITLE", "AUTHOR", "YEAR_OF_PUBLISHING", "NUMBER_OF_PAGES"
+                , "PRICE", "IS_BORROWED", "FIELD"}
+        )
+})
 public class Article extends Printed{
     @Column(name = "FIELD")
-    public String field=null;
+    public String field;
     public Article() {
     }
 
