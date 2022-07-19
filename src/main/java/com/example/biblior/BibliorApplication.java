@@ -22,10 +22,14 @@ public class BibliorApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         userRepository.deleteAll();
         printedRepository.deleteAll();
+        UserBuilder userBuilder = new UserBuilder();
+        PrintedBuilder printedBuilder = new PrintedBuilder();
         userRepository.save(new Librarian("Drake", "Ramorey", "123123@email.com", "qwerty"));
         userRepository.save(new WarehouseWorker("Droke", "Ramorey", "3q46@email.com", "qwerty"));
         userRepository.save(new Reader("Dan", "Ramorey", "3231@email.com", "qwerty"));
         printedRepository.save(new Article("LALA", "LALALA", 1999, 12, 20, "Neuroscience"));
         printedRepository.save(new Book("sfghshf", "asdkj", 1555, 12, 20, Genre.ADVENTURE.toString()));
+        userRepository.save(userBuilder.lastName("Pochka").firstName("Yasha").type(UserType.Reader).email("lalala@gmail.com").password("qwertytrewqq").build());
+        printedRepository.save(printedBuilder.author("1qeqwe").title("q34123").type(PrintedType.Book).bookGenre(Genre.ADVENTURE).build());
     }
 }
