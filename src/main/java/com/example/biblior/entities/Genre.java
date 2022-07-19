@@ -8,5 +8,17 @@ public enum Genre {
     BIOGRAPHY, BUSINESS, ECONOMICS, CRAFT, HOBBIES, COOKBOOK, DIARY, DICTIONARY,
     ENCYCLOPEDIA, GUIDE, HEALTH, FITNESS, HISTORY, HOME_AND_GARDEN, HUMOR, JOURNAL, MATH, MEMOIR, PROGRAMMING,
     PHILOSOPHY, PRAYER, RELIGION, SPIRITUALITY, TEXTBOOK, TRUE_CRIME, REVIEW, SCIENCE, SELF_HELP, SPORTS_AND_LEISURE,
-    TRAVEL
+    TRAVEL;
+    public String enumFormat(){
+        StringBuilder buf = new StringBuilder(this.toString());
+        if(this.contains("_")){
+            return buf.substring(0, 1) + buf.substring(1, buf.indexOf("_")).toLowerCase() + " " + buf.substring(buf.indexOf("_")+1).toLowerCase();
+        }else{
+            return buf.substring(0, 1) + buf.substring(1).toLowerCase();
+        }
+    }
+
+    private boolean contains(String s) {
+        return this.toString().contains(s);
+    }
 }
