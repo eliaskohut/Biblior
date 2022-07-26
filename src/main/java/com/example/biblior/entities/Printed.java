@@ -18,19 +18,36 @@ public abstract class Printed {
     @Column(name = "pages")
     public int pages;
     @Column(name = "fee_price", nullable = false)
-    public int feePrice;
-    @Column(name = "is_borrowed", nullable = false)
-    private boolean isBorrowed = false;
+    public double feePrice;
+    @Column(name = "quantity", nullable = false)
+    public int quantity;
+    @Column(name = "borrowed_by", nullable = false)
+    private Long borrowedBy = 0L;
+    private final String printedType = this.getClass().getSimpleName();
+
+    public String getPrintedType() {
+        return printedType;
+    }
 
     public Printed() {
     }
 
-    public Printed(String title, String author, int yearOfPublication, int pages, int feePrice) {
+
+    public Printed(String title, String author, int yearOfPublication, int pages, double feePrice, int quantity) {
         this.title = title;
         this.author = author;
         this.yearOfPublication = yearOfPublication;
         this.pages = pages;
         this.feePrice = feePrice;
+        this.quantity = quantity;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public String getTitle() {
@@ -65,20 +82,20 @@ public abstract class Printed {
         this.pages = pages;
     }
 
-    public int getFeePrice() {
+    public double getFeePrice() {
         return feePrice;
     }
 
-    public void setFeePrice(int feePrice) {
+    public void setFeePrice(double feePrice) {
         this.feePrice = feePrice;
     }
 
-    public boolean isBorrowed() {
-        return isBorrowed;
+    public Long getBorrowedBy() {
+        return borrowedBy;
     }
 
-    public void setBorrowed(boolean borrowed) {
-        isBorrowed = borrowed;
+    public void setBorrowedBy(Long borrowedBy) {
+        this.borrowedBy = borrowedBy;
     }
 
     public Long getId() {

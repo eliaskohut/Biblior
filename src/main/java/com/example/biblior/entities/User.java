@@ -1,6 +1,11 @@
 package com.example.biblior.entities;
 
+
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table (name = "USERS")
@@ -9,14 +14,30 @@ public abstract class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+    @Column(name="type",nullable = false)
+    private String type = this.getClass().getSimpleName();
     @Column(name="first_name", nullable = false)
+    @NotBlank(message = "First name cannot be empty")
     private String firstName;
     @Column(name="last_name", nullable = false)
+    @NotBlank(message = "Last name cannot be empty")
     private String lastName;
-    @Column(name="email", nullable = false)
+    @Column(name="email", nullable = false, unique = true)
+    @NotBlank(message = "Email cannot be empty")
+    @Email(message = "Email is not correct")
     private String email;
     @Column(name = "password", nullable = false)
+    @NotBlank(message = "Password cannot be empty")
     private String password;
+    @Column(name="failed_borrows")
+    private int failedBorrows = 0;
+    @ManyToMany
+    @JoinTable(
+            name = "user_borrows",
+            joinColumns = {@JoinColumn(name="user_id")},
+            inverseJoinColumns = {@JoinColumn(name="printed_id")}
+    )
+    private Set<Printed> borrows = new HashSet<>();
 
     public User() {
     }
@@ -73,4 +94,12 @@ public abstract class User {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public int getFailedBorrows() {
+        return failedBorrows;
+    }
+    public void borrowPunished(){
+        this.failedBorrows++;
+    }
+
 }
