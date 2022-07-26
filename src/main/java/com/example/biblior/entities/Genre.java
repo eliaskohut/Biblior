@@ -1,5 +1,8 @@
 package com.example.biblior.entities;
 
+import org.apache.commons.lang3.text.WordUtils;
+
+
 public enum Genre {
     ACTION, ADVENTURE, ALTERNATE_HISTORY, ANTHOLOGY, CHICK_LIT, CHILDREN, CLASSIC,
     COMIC, COMING_OF_AGE, CRIME, DRAMA, FAIRYTALE, FANTASY, GRAPHIC_NOVEL, HISTORICAL,
@@ -10,14 +13,20 @@ public enum Genre {
     PHILOSOPHY, PRAYER, RELIGION, SPIRITUALITY, TEXTBOOK, TRUE_CRIME, REVIEW, SCIENCE, SELF_HELP, SPORTS_AND_LEISURE,
     TRAVEL;
     public String enumFormat(){
-        StringBuilder buf = new StringBuilder(this.toString());
-        if(this.contains("_")){
-            return buf.substring(0, 1) + buf.substring(1, buf.indexOf("_")).toLowerCase() + " " + buf.substring(buf.indexOf("_")+1).toLowerCase();
+        String s = this.toString();
+        while(s.contains("_")){
+            s=substitute(s, "_", " ");
+        }
+        return WordUtils.capitalizeFully(s);
+    }
+    private String substitute(String main, String trash, String substitute){
+        if(main.contains(trash)){
+            StringBuilder sb = new StringBuilder(main);
+            return sb.substring(0, sb.indexOf(trash)) + substitute + sb.substring(sb.indexOf(trash)+1);
         }else{
-            return buf.substring(0, 1) + buf.substring(1).toLowerCase();
+            return trash;
         }
     }
-
     private boolean contains(String s) {
         return this.toString().contains(s);
     }
