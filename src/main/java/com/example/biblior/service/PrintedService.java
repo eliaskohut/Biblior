@@ -12,4 +12,5 @@ public interface PrintedService {
     List<Book> getAllBooks();
     List<Article> getAllArticles();
     List<Newspaper> getAllNewspapers();
+    void deletePrinted(Printed printed);
 }

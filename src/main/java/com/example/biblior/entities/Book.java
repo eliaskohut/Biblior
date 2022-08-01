@@ -7,9 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="book")
+@Table(name="PRINTED")
 public class Book extends Printed{
-    @Column(name = "genre")
+    @Column(name = "GENRE")
     public String genre;
 
     public Book() {

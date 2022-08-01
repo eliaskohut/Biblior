@@ -3,25 +3,25 @@ package com.example.biblior.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name="printed")
+@Table(name="PRINTED")
 public abstract class Printed {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private Long id;
-    @Column(name = "title", nullable = false)
+    @Column(name = "TITLE", nullable = false)
     public String title;
-    @Column(name = "author", nullable = false)
+    @Column(name = "AUTHOR", nullable = false)
     public String author;
-    @Column(name="year_of_publication")
+    @Column(name="YEAR_OF_PUBLICATION")
     public int yearOfPublication;
-    @Column(name = "pages")
+    @Column(name = "PAGES")
     public int pages;
-    @Column(name = "fee_price", nullable = false)
+    @Column(name = "FEE_PRICE", nullable = false)
     public double feePrice;
-    @Column(name = "quantity", nullable = false)
+    @Column(name = "QUANTITY", nullable = false)
     public int quantity;
-    @Column(name = "borrowed_by", nullable = false)
+    @Column(name = "BORROWED_BY", nullable = false)
     private Long borrowedBy = 0L;
     private final String printedType = this.getClass().getSimpleName();
 
