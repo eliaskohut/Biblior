@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 public class PrintedServiceImpl implements PrintedService {
-    private PrintedRepository printedRepository;
+    private final PrintedRepository printedRepository;
 
     public PrintedServiceImpl(PrintedRepository printedRepository) {
         super();
@@ -37,5 +37,10 @@ public class PrintedServiceImpl implements PrintedService {
     @Override
     public List<Newspaper> getAllNewspapers() {
         return (List<Newspaper>) printedRepository.findByPrintedTypeContaining("Newspaper");
+    }
+
+    @Override
+    public void deletePrinted(Printed printed) {
+        printedRepository.delete(printed);
     }
 }

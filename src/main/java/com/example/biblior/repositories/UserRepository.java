@@ -1,10 +1,13 @@
 package com.example.biblior.repositories;
 
-import com.example.biblior.entities.User;
-import org.springframework.data.repository.CrudRepository;
+import com.example.biblior.entities.*;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface UserRepository extends CrudRepository<User, Long> {
+import java.util.List;
 
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+
+    List<? extends User> findByRoleContaining(String admin);
 }

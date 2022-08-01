@@ -12,30 +12,30 @@ import java.util.Set;
 public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private Long id;
-    @Column(name="type",nullable = false)
-    private String type = this.getClass().getSimpleName();
-    @Column(name="first_name", nullable = false)
+    @Column(name="ROLE",nullable = false)
+    private final String role = this.getClass().getSimpleName();
+    @Column(name="FIRST_NAME", nullable = false)
     @NotBlank(message = "First name cannot be empty")
     private String firstName;
-    @Column(name="last_name", nullable = false)
+    @Column(name="LAST_NAME", nullable = false)
     @NotBlank(message = "Last name cannot be empty")
     private String lastName;
-    @Column(name="email", nullable = false, unique = true)
+    @Column(name="EMAIL", nullable = false, unique = true)
     @NotBlank(message = "Email cannot be empty")
     @Email(message = "Email is not correct")
     private String email;
-    @Column(name = "password", nullable = false)
+    @Column(name = "PASSWORD", nullable = false)
     @NotBlank(message = "Password cannot be empty")
     private String password;
-    @Column(name="failed_borrows")
+    @Column(name="FAILED_BORROWS")
     private int failedBorrows = 0;
     @ManyToMany
     @JoinTable(
-            name = "user_borrows",
-            joinColumns = {@JoinColumn(name="user_id")},
-            inverseJoinColumns = {@JoinColumn(name="printed_id")}
+            name = "USER_BORROWES",
+            joinColumns = {@JoinColumn(name="USER_ID")},
+            inverseJoinColumns = {@JoinColumn(name="PRINTED_ID")}
     )
     private Set<Printed> borrows = new HashSet<>();
 

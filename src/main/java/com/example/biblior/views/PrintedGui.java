@@ -7,6 +7,8 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
@@ -22,6 +24,8 @@ import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
+import com.vaadin.flow.theme.lumo.LumoUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
@@ -30,6 +34,7 @@ import java.util.stream.Stream;
 
 @PageTitle("Printed Manager | Biblior")
 @Route(value="printedmanager")
+@AnonymousAllowed
 public class PrintedGui extends VerticalLayout {
     private PrintedRepository printedRepository;
     private PrintedService printedService;
@@ -53,6 +58,7 @@ public class PrintedGui extends VerticalLayout {
     public PrintedGui(PrintedRepository printedRepository, PrintedService printedService) {
         this.printedRepository = printedRepository;
         this.printedService = printedService;
+
         addClassName("printed-manager");
         setSizeFull();
         add(new H3("Printed Manager"));
@@ -74,24 +80,14 @@ public class PrintedGui extends VerticalLayout {
         textFieldAuthor.setRequired(true);
         textFieldAuthor.setClearButtonVisible(true);
         textFieldAuthor.setMaxLength(64);
-        textFieldAuthor.addValueChangeListener(event -> {
-            if (textFieldAuthor.isInvalid()) {
-                errorNotificationThrow("Enter author");
-                buttonAddPrinted.setEnabled(false);
-            }
-        });
+        textFieldAuthor.addValueChangeListener(event -> addPrintedCheck());
 
 
         textFieldTitle = new TextField("Title");
         textFieldTitle.setRequired(true);
         textFieldTitle.setClearButtonVisible(true);
         textFieldTitle.setMaxLength(64);
-        textFieldTitle.addValueChangeListener(event -> {
-            if (textFieldTitle.isInvalid()) {
-                errorNotificationThrow("Enter title");
-                buttonAddPrinted.setEnabled(false);
-            }
-        });
+        textFieldTitle.addValueChangeListener(event -> addPrintedCheck());
 
 
         integerFieldYearOfPublicaton = new IntegerField();
@@ -100,11 +96,7 @@ public class PrintedGui extends VerticalLayout {
         integerFieldYearOfPublicaton.setRequiredIndicatorVisible(true);
         integerFieldYearOfPublicaton.setMax(Calendar.getInstance().get(Calendar.YEAR));
         integerFieldYearOfPublicaton.setErrorMessage("Max " + Calendar.getInstance().get(Calendar.YEAR));
-        integerFieldYearOfPublicaton.addValueChangeListener(event -> {
-            if (integerFieldYearOfPublicaton.isInvalid() || integerFieldYearOfPublicaton.getValue() == null) {
-                buttonAddPrinted.setEnabled(false);
-            }
-        });
+        integerFieldYearOfPublicaton.addValueChangeListener(event -> addPrintedCheck());
 
 
         integerFieldPages = new IntegerField();
@@ -114,11 +106,7 @@ public class PrintedGui extends VerticalLayout {
         integerFieldPages.setValue(1);
         integerFieldPages.setRequiredIndicatorVisible(true);
         integerFieldPages.setErrorMessage("The number of pages cannot be negative");
-        integerFieldPages.addValueChangeListener(event -> {
-            if (integerFieldPages.isInvalid() || integerFieldPages.getValue() == null) {
-                buttonAddPrinted.setEnabled(false);
-            }
-        });
+        integerFieldPages.addValueChangeListener(event -> addPrintedCheck());
 
 
         integerFieldQuantity = new IntegerField();
@@ -129,11 +117,7 @@ public class PrintedGui extends VerticalLayout {
         integerFieldQuantity.setValue(1);
         integerFieldQuantity.setHasControls(true);
         integerFieldQuantity.setErrorMessage("The number of printed cannot be negative");
-        integerFieldQuantity.addValueChangeListener(event -> {
-            if (integerFieldQuantity.isInvalid() || integerFieldQuantity.getValue() == null) {
-                buttonAddPrinted.setEnabled(false);
-            }
-        });
+        integerFieldQuantity.addValueChangeListener(event -> addPrintedCheck());
 
         numberFieldFeePrice = new NumberField();
         numberFieldFeePrice.setLabel("Fee price");
@@ -144,11 +128,7 @@ public class PrintedGui extends VerticalLayout {
         dollarPrefix.setText("$");
         numberFieldFeePrice.setPrefixComponent(dollarPrefix);
         numberFieldFeePrice.setErrorMessage("The price cannot be negative");
-        numberFieldFeePrice.addValueChangeListener(event -> {
-            if (numberFieldFeePrice.isInvalid() || numberFieldFeePrice.getValue() == null) {
-                buttonAddPrinted.setEnabled(false);
-            }
-        });
+        numberFieldFeePrice.addValueChangeListener(event -> addPrintedCheck());
 
 
         printedFormLayout.add(
@@ -162,7 +142,10 @@ public class PrintedGui extends VerticalLayout {
         add(printedFormLayout);
 
 
-        selectPrintedType.addValueChangeListener(change -> selectPrintedTypeEvent());
+        selectPrintedType.addValueChangeListener(change -> {
+            selectPrintedTypeEvent();
+            addPrintedCheck();
+        });
 
 
         buttonAddPrinted.addClickListener(click -> {
@@ -172,10 +155,29 @@ public class PrintedGui extends VerticalLayout {
             nullify();
         });
 
-        add(new H3("Articles"), articleGrid, new H3("Books"), bookGrid, new H3("Newspaper"), newspaperGrid);
         configureGrid();
         updatePrintedList();
 
+    }
+
+    private void addPrintedCheck(){
+        if(selectPrintedType.isInvalid() || selectPrintedType.getValue()==null){
+            buttonAddPrinted.setEnabled(false);
+        }else if(textFieldTitle.isInvalid() || textFieldTitle.getValue()==null){
+            buttonAddPrinted.setEnabled(false);
+        }else if(textFieldAuthor.isInvalid() || textFieldAuthor.getValue()==null){
+            buttonAddPrinted.setEnabled(false);
+        }else if(integerFieldYearOfPublicaton.isInvalid() || integerFieldYearOfPublicaton.getValue()==null){
+            buttonAddPrinted.setEnabled(false);
+        }else if(integerFieldPages.isInvalid() || integerFieldPages.getValue()==null){
+            buttonAddPrinted.setEnabled(false);
+        }else if(numberFieldFeePrice.isInvalid() || numberFieldFeePrice.getValue()==null){
+            buttonAddPrinted.setEnabled(false);
+        }else if(integerFieldQuantity.isInvalid() || integerFieldQuantity.getValue()==null){
+            buttonAddPrinted.setEnabled(false);
+        }else{
+            buttonAddPrinted.setEnabled(true);
+        }
     }
 
     private void updatePrintedList() {
@@ -187,21 +189,42 @@ public class PrintedGui extends VerticalLayout {
     }
 
     private void configureGrid() {
+
         articleGrid.addClassName("article-grid");
-        articleGrid.setSizeFull();
         articleGrid.setColumns("author", "title", "field", "yearOfPublication", "pages", "feePrice", "quantity", "borrowedBy");
-        articleGrid.getColumns().forEach(column -> column.setAutoWidth(true));
-        articleGrid.setMinHeight("500px");
+        gridFormat(articleGrid, "Articles");
         bookGrid.addClassName("book-grid");
-        bookGrid.setSizeFull();
         bookGrid.setColumns("author", "title", "genre", "yearOfPublication", "pages", "feePrice", "quantity", "borrowedBy");
-        bookGrid.getColumns().forEach(column -> column.setAutoWidth(true));
-        bookGrid.setMinHeight("500px");
+        gridFormat(bookGrid, "Books");
         newspaperGrid.addClassName("newspaper-grid");
-        newspaperGrid.setSizeFull();
         newspaperGrid.setColumns("author", "title", "country", "yearOfPublication", "pages", "feePrice", "quantity", "borrowedBy");
-        newspaperGrid.getColumns().forEach(column -> column.setAutoWidth(true));
-        newspaperGrid.setMinHeight("500px");
+        gridFormat(newspaperGrid, "Newspaper");
+    }
+
+    private void gridFormat(Grid<? extends Printed> grid, String name){
+        Button deleteButton = new Button("Delete");
+        deleteButton.setEnabled(false);
+        grid.setSizeFull();
+        grid.getColumns().forEach(column -> column.setAutoWidth(true));
+        grid.setMinHeight("500px");
+        HorizontalLayout footer = new HorizontalLayout(deleteButton);
+        deleteButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        footer.getStyle().set("flex-wrap", "wrap");
+        setAlignItems(Alignment.STRETCH);
+        add(new H3(name), grid, footer);
+        grid.setSelectionMode(Grid.SelectionMode.MULTI);
+        grid.addSelectionListener(selection -> {
+            deleteButton.setEnabled(true);
+            if(selection.getAllSelectedItems().size() == 0){
+                deleteButton.setEnabled(false);
+            }
+            deleteButton.addClickListener(click -> {
+                selection.getAllSelectedItems().forEach(element -> printedService.deletePrinted(element));
+                deleteButton.setEnabled(false);
+                updatePrintedList();
+                successNotification("Successfully deleted");
+            });
+        });
     }
 
     public void addPrinted() {
@@ -262,6 +285,7 @@ public class PrintedGui extends VerticalLayout {
         HorizontalLayout layout = new HorizontalLayout(text, closeButton);
         layout.setAlignItems(Alignment.CENTER);
         notification.add(layout);
+        notification.setDuration(2);
         notification.open();
     }
 
@@ -297,7 +321,7 @@ public class PrintedGui extends VerticalLayout {
         } catch (NullPointerException ignore) {
         }
         try {
-            printedFormLayout.remove(buttonAddPrinted);
+            buttonAddPrinted.setEnabled(false);
         } catch (NullPointerException ignore) {
         }
         if (Objects.equals(selectPrintedType.getValue(), "Article")) {
@@ -369,9 +393,11 @@ public class PrintedGui extends VerticalLayout {
             } catch (NullPointerException ignore) {
             }
             try {
-                printedFormLayout.remove(buttonAddPrinted);
+                buttonAddPrinted.setEnabled(false);
             } catch (NullPointerException ignore) {
             }
         }
     }
+
+
 }
