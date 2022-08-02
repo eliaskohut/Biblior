@@ -10,8 +10,9 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Route(value = "catalogue", layout = MainLayout.class)
+@Route(value = "", layout = MainLayout.class)
 @PageTitle("Catalogue | Biblior")
 @AnonymousAllowed
 public class CatalogueView extends VerticalLayout {
@@ -19,6 +20,7 @@ public class CatalogueView extends VerticalLayout {
     Grid<Article> articles = new Grid<>(Article.class);
     Grid<Newspaper> newspapers = new Grid<>(Newspaper.class);
 
+    @Autowired
     public CatalogueView() {
 
     }

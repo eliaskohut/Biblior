@@ -28,13 +28,14 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.security.PermitAll;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @PageTitle("Printed Manager | Biblior")
-@Route(value="printedmanager")
-@AnonymousAllowed
+@Route(value="printedmanager", layout = MainLayout.class)
+@PermitAll
 public class PrintedGui extends VerticalLayout {
     private PrintedRepository printedRepository;
     private PrintedService printedService;
@@ -79,15 +80,27 @@ public class PrintedGui extends VerticalLayout {
         textFieldAuthor = new TextField("Author");
         textFieldAuthor.setRequired(true);
         textFieldAuthor.setClearButtonVisible(true);
+        textFieldAuthor.setMinLength(1);
         textFieldAuthor.setMaxLength(64);
-        textFieldAuthor.addValueChangeListener(event -> addPrintedCheck());
+        textFieldAuthor.addValueChangeListener(event -> {
+            if(Objects.equals(textFieldAuthor.getValue(), " ")){
+                textFieldAuthor.setInvalid(true);
+            }
+            addPrintedCheck();
+        });
 
 
         textFieldTitle = new TextField("Title");
         textFieldTitle.setRequired(true);
         textFieldTitle.setClearButtonVisible(true);
         textFieldTitle.setMaxLength(64);
-        textFieldTitle.addValueChangeListener(event -> addPrintedCheck());
+        textFieldTitle.setMinLength(1);
+        textFieldTitle.addValueChangeListener(event -> {
+            if(Objects.equals(textFieldTitle.getValue(), " ")){
+                textFieldTitle.setInvalid(true);
+            }
+            addPrintedCheck();
+        });
 
 
         integerFieldYearOfPublicaton = new IntegerField();
@@ -143,8 +156,11 @@ public class PrintedGui extends VerticalLayout {
 
 
         selectPrintedType.addValueChangeListener(change -> {
-            selectPrintedTypeEvent();
-            addPrintedCheck();
+            try{
+                selectPrintedTypeEvent();
+                addPrintedCheck();
+            }catch (NullPointerException ignore){}
+            buttonAddPrinted.setEnabled(false);
         });
 
 
@@ -161,22 +177,36 @@ public class PrintedGui extends VerticalLayout {
     }
 
     private void addPrintedCheck(){
+        buttonAddPrinted.setEnabled(true);
         if(selectPrintedType.isInvalid() || selectPrintedType.getValue()==null){
             buttonAddPrinted.setEnabled(false);
-        }else if(textFieldTitle.isInvalid() || textFieldTitle.getValue()==null){
+        }
+        if(textFieldTitle.isInvalid() || textFieldTitle.isEmpty()){
             buttonAddPrinted.setEnabled(false);
-        }else if(textFieldAuthor.isInvalid() || textFieldAuthor.getValue()==null){
+        }
+        if(textFieldAuthor.isInvalid() || textFieldAuthor.isEmpty()){
             buttonAddPrinted.setEnabled(false);
-        }else if(integerFieldYearOfPublicaton.isInvalid() || integerFieldYearOfPublicaton.getValue()==null){
+        }
+        if(integerFieldYearOfPublicaton.isInvalid() || integerFieldYearOfPublicaton.isEmpty()){
             buttonAddPrinted.setEnabled(false);
-        }else if(integerFieldPages.isInvalid() || integerFieldPages.getValue()==null){
+        }
+        if(integerFieldPages.isInvalid() || integerFieldPages.isEmpty()){
             buttonAddPrinted.setEnabled(false);
-        }else if(numberFieldFeePrice.isInvalid() || numberFieldFeePrice.getValue()==null){
+        }
+        if(numberFieldFeePrice.isInvalid() || numberFieldFeePrice.isEmpty()){
             buttonAddPrinted.setEnabled(false);
-        }else if(integerFieldQuantity.isInvalid() || integerFieldQuantity.getValue()==null){
+        }
+        if(integerFieldQuantity.isInvalid() || integerFieldQuantity.isEmpty()){
             buttonAddPrinted.setEnabled(false);
-        }else{
-            buttonAddPrinted.setEnabled(true);
+        }
+        if(textFieldArticleField.isInvalid() || textFieldArticleField.isEmpty()){
+            buttonAddPrinted.setEnabled(false);
+        }
+        if(selectBookGenre.isInvalid() || selectBookGenre.isEmpty()){
+            buttonAddPrinted.setEnabled(false);
+        }
+        if(textFieldNewspaperCountry.isInvalid() || textFieldNewspaperCountry.isEmpty()){
+            buttonAddPrinted.setEnabled(false);
         }
     }
 
@@ -191,13 +221,13 @@ public class PrintedGui extends VerticalLayout {
     private void configureGrid() {
 
         articleGrid.addClassName("article-grid");
-        articleGrid.setColumns("author", "title", "field", "yearOfPublication", "pages", "feePrice", "quantity", "borrowedBy");
+        articleGrid.setColumns("author", "title", "field", "yearOfPublication", "pages", "feePrice", "quantity");
         gridFormat(articleGrid, "Articles");
         bookGrid.addClassName("book-grid");
-        bookGrid.setColumns("author", "title", "genre", "yearOfPublication", "pages", "feePrice", "quantity", "borrowedBy");
+        bookGrid.setColumns("author", "title", "genre", "yearOfPublication", "pages", "feePrice", "quantity");
         gridFormat(bookGrid, "Books");
         newspaperGrid.addClassName("newspaper-grid");
-        newspaperGrid.setColumns("author", "title", "country", "yearOfPublication", "pages", "feePrice", "quantity", "borrowedBy");
+        newspaperGrid.setColumns("author", "title", "country", "yearOfPublication", "pages", "feePrice", "quantity");
         gridFormat(newspaperGrid, "Newspaper");
     }
 
@@ -260,12 +290,13 @@ public class PrintedGui extends VerticalLayout {
 
     private void nullify() {
         selectPrintedType.setValue(null);
+        selectPrintedType.setInvalid(true);
         textFieldAuthor.setValue("Author");
         textFieldAuthor.setAutofocus(true);
         textFieldTitle.setValue("Title");
         textFieldTitle.focus();
         textFieldTitle.setAutoselect(true);
-        integerFieldYearOfPublicaton.setValue(null);
+        integerFieldYearOfPublicaton.setValue(2022);
         integerFieldPages.setValue(1);
         numberFieldFeePrice.setValue(1d);
         integerFieldQuantity.setValue(1);

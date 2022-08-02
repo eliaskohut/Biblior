@@ -21,8 +21,6 @@ public abstract class Printed {
     public double feePrice;
     @Column(name = "QUANTITY", nullable = false)
     public int quantity;
-    @Column(name = "BORROWED_BY", nullable = false)
-    private Long borrowedBy = 0L;
     private final String printedType = this.getClass().getSimpleName();
 
     public String getPrintedType() {
@@ -88,14 +86,6 @@ public abstract class Printed {
 
     public void setFeePrice(double feePrice) {
         this.feePrice = feePrice;
-    }
-
-    public Long getBorrowedBy() {
-        return borrowedBy;
-    }
-
-    public void setBorrowedBy(Long borrowedBy) {
-        this.borrowedBy = borrowedBy;
     }
 
     public Long getId() {

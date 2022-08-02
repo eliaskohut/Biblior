@@ -16,14 +16,14 @@ import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.security.PermitAll;
 import java.util.Objects;
 
 @PageTitle("User Manager | Biblior")
-@Route(value="usermanager")
-@AnonymousAllowed
+@Route(value="usermanager", layout = MainLayout.class)
+@PermitAll
 public class UsersGui extends VerticalLayout {
     private final UserRepository userRepository;
     private final UserService userService;
